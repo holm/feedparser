@@ -364,7 +364,7 @@ class TestOpenResource(unittest.TestCase):
     "Ensure that `_open_resource()` interprets its arguments as URIs, " \
     "file-like objects, or in-memory feeds as expected"
     def test_fileobj(self):
-        r = feedparser._open_resource(sys.stdin, '', '', '', '', [], {})
+        r = feedparser._open_resource(sys.stdin, '', '', '', '', [], {}, 10)
         self.assertTrue(r is sys.stdin)
     def test_feed(self):
         f = feedparser.parse(u'feed://localhost:8097/tests/http/target.xml')
@@ -374,19 +374,19 @@ class TestOpenResource(unittest.TestCase):
         self.assertEqual(f.href, u'http://localhost:8097/tests/http/target.xml')
     def test_bytes(self):
         s = '<feed><item><title>text</title></item></feed>'.encode('utf-8')
-        r = feedparser._open_resource(s, '', '', '', '', [], {})
+        r = feedparser._open_resource(s, '', '', '', '', [], {}, 10)
         self.assertEqual(s, r.read())
     def test_string(self):
         s = '<feed><item><title>text</title></item></feed>'
-        r = feedparser._open_resource(s, '', '', '', '', [], {})
+        r = feedparser._open_resource(s, '', '', '', '', [], {}, 10)
         self.assertEqual(s.encode('utf-8'), r.read())
     def test_unicode_1(self):
         s = u'<feed><item><title>text</title></item></feed>'
-        r = feedparser._open_resource(s, '', '', '', '', [], {})
+        r = feedparser._open_resource(s, '', '', '', '', [], {}, 10)
         self.assertEqual(s.encode('utf-8'), r.read())
     def test_unicode_2(self):
         s = u'<feed><item><title>t\u00e9xt</title></item></feed>'
-        r = feedparser._open_resource(s, '', '', '', '', [], {})
+        r = feedparser._open_resource(s, '', '', '', '', [], {}, 10)
         self.assertEqual(s.encode('utf-8'), r.read())
 
 class TestMakeSafeAbsoluteURI(unittest.TestCase):
